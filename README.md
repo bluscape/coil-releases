@@ -18,12 +18,13 @@ User guide: **https://coil.zone/guide/**
 
 ## Download
 
-Get the newest release from **[Releases](../../releases/latest)**:
-
-| File | For |
+| Where you work | Get Coil |
 |---|---|
-| `Coil-Setup-<version>.exe` | Windows installer: Coil for Espressif-IDE (and other IDEs that start OpenOCD). It also offers Espressif-IDE, ESP-IDF and the USB drivers when they're missing or out of date. |
-| `coil-<version>.vsix` | The VS Code extension. Install it with **Extensions → … → Install from VSIX**, or `code --install-extension coil-<version>.vsix`. |
+| **VS Code** | The **Coil for ESP32** extension from the VS Code Marketplace (coming soon). VS Code installs and updates it. |
+| **Espressif-IDE** | `Coil-Setup-<version>.exe` from **[Releases](../../releases/latest)**. It also offers Espressif-IDE, ESP-IDF and the USB drivers when they're missing or out of date. |
+
+Releases also carry the extension as `coil-<version>.vsix`, for PCs without Marketplace access
+(and until it's on the Marketplace): install it with **Extensions → … → Install from VSIX**.
 
 Coil runs on Windows 10 and 11 (x64).
 
@@ -40,14 +41,17 @@ The [guide](https://coil.zone/guide/#espressif-ide) has the details.
 
 ## VS Code
 
-Install the `.vsix`, open an ESP-IDF project and follow Coil's **Setup** view. It installs
-ESP-IDF, the drivers and code completion if they're missing.
+Install **Coil for ESP32** from the Marketplace (or the `.vsix`), open an ESP-IDF project and
+follow Coil's **Setup** view. It installs ESP-IDF, the drivers and code completion if they're
+missing.
 
 ## Updates
 
-The installer can check once a week for newer releases of Coil, Espressif-IDE, EIM and ESP-IDF,
-and shows a notification when there is one (Start menu: **Check for Coil updates** checks now).
-To update, run the newest installer.
+In VS Code, the extension updates itself through the Marketplace.
+
+For Espressif-IDE, the installer can check once a week for newer releases of Coil,
+Espressif-IDE, EIM and ESP-IDF, and shows a notification when there is one (Start menu:
+**Check for Coil updates** checks now). To update, run the newest installer.
 
 ## Problems and ideas
 
