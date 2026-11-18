@@ -10,6 +10,9 @@ editors ESP-IDF developers already use: **VS Code** and **Espressif-IDE**.
 - **Flash** over JTAG, writing only what changed.
 - **Build, flash and monitor** ESP-IDF projects, with panic backtraces decoded to file and line.
 - Works with the chip's **built-in USB-JTAG** and with an **ESP-Prog** on the JTAG pins.
+- **Plan pins** with the [pin configurator](https://coil.zone/configurator/): it checks your pin
+  plan against the exact module or chip, so strapping, flash and PSRAM conflicts show up before
+  you build the board. It runs in your browser; nothing is uploaded.
 
 User guide: **https://coil.zone/guide/**
 
