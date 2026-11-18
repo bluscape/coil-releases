@@ -1,0 +1,37 @@
+Coil
+Copyright (c) 2026 bluscape. All rights reserved.
+
+Coil is proprietary software, provided free of charge.
+
+1. Permission. You may download, install and use Coil, including the Visual Studio Code
+   extension and the programs that come with it (coil-gdb, coil-dap, coil-flash,
+   coil-monitor), free of charge, for any purpose, personal or commercial, on any number of
+   computers.
+
+2. Restrictions. You may not:
+   a. sell, rent, lease or sublicense Coil, or charge for it on its own or as part of
+      another product;
+   b. redistribute Coil, or modified copies of it, other than by pointing others to the
+      official distribution (such as the Visual Studio Code Marketplace);
+   c. modify, decompile, disassemble or reverse engineer Coil, except to the extent that
+      applicable law expressly permits it despite this restriction.
+
+3. Ownership. Coil is licensed, not sold. bluscape keeps all rights not expressly granted
+   here, including the right to change these terms for later versions or to release Coil
+   under other terms.
+
+4. Third-party material. Parts of Coil come from, or were written with reference to,
+   material under its own licence; that licence applies to that material, and nothing here
+   limits it. See THIRD-PARTY-NOTICES.md.
+
+5. No warranty. Coil is provided "as is", without warranty of any kind, express or implied,
+   including the warranties of merchantability, fitness for a particular purpose and
+   non-infringement. Coil reads and writes the memory and flash of connected devices; you
+   use it at your own risk.
+
+6. Limitation of liability. To the extent permitted by law, bluscape is not liable for any
+   damages arising from the use of, or inability to use, Coil, including damage to devices
+   or loss of data.
+
+7. Termination. This permission ends automatically if you break these terms. You must then
+   stop using Coil and delete your copies.
