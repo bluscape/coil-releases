@@ -20,11 +20,10 @@ User guide: **https://coil.zone/guide/**
 
 | Where you work | Get Coil |
 |---|---|
-| **VS Code** | The **Coil for ESP32** extension from the VS Code Marketplace (coming soon). VS Code installs and updates it. |
+| **VS Code** | The **Coil for ESP32** extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=bluscape.coil). VS Code installs and updates it. |
 | **Espressif-IDE** | `Coil-Setup-<version>.exe` from **[Releases](../../releases/latest)**. It also offers Espressif-IDE, ESP-IDF and the USB drivers when they're missing or out of date. |
 
-Releases also carry the extension as `coil-<version>.vsix`, for PCs without Marketplace access
-(and until it's on the Marketplace): install it with **Extensions → … → Install from VSIX**.
+Releases also carry the extension as `coil-<version>.vsix`, for PCs without Marketplace access: install it with **Extensions → … → Install from VSIX**.
 
 Coil runs on Windows 10 and 11 (x64).
 
