@@ -36,13 +36,25 @@ jobs:
       TAG: ${{ github.event.release.tag_name || inputs.tag }}
       OVSX_PAT: ${{ secrets.OVSX_PAT }}
     steps:
+      # Files dropped onto the release page after Publish arrive a minute or two after this
+      # run starts, so wait for the .vsix for up to 15 minutes.
       - name: Download the release's .vsix
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version="${TAG#v}"
           vsix="coil-${version}.vsix"
-          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$vsix"
+          for i in $(seq 1 60); do
+            if gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$vsix" --clobber 2>/dev/null; then
+              break
+            fi
+            if [ "$i" = 60 ]; then
+              echo "::error::$TAG has no $vsix after 15 minutes"
+              exit 1
+            fi
+            echo "No $vsix on $TAG yet; checking again in 15 s ($i/60)"
+            sleep 15
+          done
           echo "VERSION=$version" >> "$GITHUB_ENV"
           echo "VSIX=$vsix" >> "$GITHUB_ENV"
           sha256sum "$vsix"
