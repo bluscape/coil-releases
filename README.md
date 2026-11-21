@@ -20,7 +20,7 @@ User guide: **https://coil.zone/guide/**
 
 | Where you work | Get Coil |
 |---|---|
-| **VS Code** | The **Coil for ESP32** extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=bluscape.coil). VS Code installs and updates it. |
+| **VS Code** | The **Coil for ESP32** extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=bluscape.coil). VS Code installs and updates it. VSCodium and other editors that use Open VSX: [Open VSX](https://open-vsx.org/extension/bluscape/coil). |
 | **Espressif-IDE** | `Coil-Setup-<version>.exe` from **[Releases](../../releases/latest)**. It also offers Espressif-IDE, ESP-IDF and the USB drivers when they're missing or out of date. |
 
 Releases also carry the extension as `coil-<version>.vsix`, for PCs without Marketplace access: install it with **Extensions → … → Install from VSIX**.
@@ -40,13 +40,13 @@ The [guide](https://coil.zone/guide/#espressif-ide) has the details.
 
 ## VS Code
 
-Install **Coil for ESP32** from the Marketplace (or the `.vsix`), open an ESP-IDF project and
+Install **Coil for ESP32** from the Marketplace (Open VSX in VSCodium and similar editors, or the `.vsix`), open an ESP-IDF project and
 follow Coil's **Setup** view. It installs ESP-IDF, the drivers and code completion if they're
 missing.
 
 ## Updates
 
-In VS Code, the extension updates itself through the Marketplace.
+In VS Code, the extension updates itself through the Marketplace (through Open VSX in editors that use it).
 
 For Espressif-IDE, the installer can check once a week for newer releases of Coil,
 Espressif-IDE, EIM and ESP-IDF, and shows a notification when there is one (Start menu:
