@@ -52,27 +52,46 @@ jobs:
           unzip -p "$VSIX" extension.vsixmanifest > manifest.xml
           grep -q "Version=\"$VERSION\"" manifest.xml || { echo "::error::$VSIX is not version $VERSION"; exit 1; }
           grep -q 'TargetPlatform="win32-x64"' manifest.xml || { echo "::error::$VSIX is not marked win32-x64"; exit 1; }
+          publisher=$(grep -o 'Publisher="[^"]*"' manifest.xml | head -n1 | cut -d'"' -f2)
+          name=$(grep -o ' Id="[^"]*"' manifest.xml | head -n1 | cut -d'"' -f2)
+          echo "PUBLISHER=$publisher" >> "$GITHUB_ENV"
+          echo "NAME=$name" >> "$GITHUB_ENV"
+          echo "$publisher.$name $VERSION win32-x64"
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # Each store is skipped when it already has this version, so a re-run only fills in what's missing.
       - name: Publish to the VS Code Marketplace
         if: ${{ inputs.target != 'openvsx' }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npx --yes @vscode/vsce@3 publish --packagePath "$VSIX"
+        run: |
+          query='{"filters":[{"criteria":[{"filterType":7,"value":"'"$PUBLISHER.$NAME"'"}]}],"flags":1}'
+          found=$(curl -sf -X POST https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery \
+            -H 'Content-Type: application/json' -H 'Accept: application/json;api-version=7.2-preview.1' -d "$query" \
+            | jq -r --arg v "$VERSION" '[.results[0].extensions[0].versions[]? | select(.version == $v and (.targetPlatform // "") == "win32-x64")] | length' || true)
+          if [ "${found:-0}" != "0" ]; then
+            echo "$PUBLISHER.$NAME $VERSION is already on the Marketplace: skipping"
+            exit 0
+          fi
+          npx --yes @vscode/vsce@3 publish --packagePath "$VSIX"
 
       - name: Create the Open VSX namespace if it's missing
         if: ${{ env.OVSX_PAT != '' && inputs.target != 'marketplace' }}
         run: |
-          namespace=$(grep -o 'Publisher="[^"]*"' manifest.xml | head -n1 | cut -d'"' -f2)
-          if curl -sf "https://open-vsx.org/api/$namespace" > /dev/null; then
-            echo "Namespace $namespace exists"
+          if curl -sf "https://open-vsx.org/api/$PUBLISHER" > /dev/null; then
+            echo "Namespace $PUBLISHER exists"
           else
-            npx --yes ovsx@0 create-namespace "$namespace"
+            npx --yes ovsx@0 create-namespace "$PUBLISHER"
           fi
 
       - name: Publish to Open VSX
         if: ${{ env.OVSX_PAT != '' && inputs.target != 'marketplace' }}
-        run: npx --yes ovsx@0 publish "$VSIX"
+        run: |
+          if curl -sf "https://open-vsx.org/api/$PUBLISHER/$NAME/win32-x64/$VERSION" > /dev/null; then
+            echo "$PUBLISHER.$NAME $VERSION is already on Open VSX: skipping"
+            exit 0
+          fi
+          npx --yes ovsx@0 publish "$VSIX"
