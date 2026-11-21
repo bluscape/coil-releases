@@ -94,4 +94,15 @@ jobs:
             echo "$PUBLISHER.$NAME $VERSION is already on Open VSX: skipping"
             exit 0
           fi
-          npx --yes ovsx@0 publish "$VSIX"
+          # A version still in Open VSX's scan isn't public yet, so the check above misses it;
+          # ovsx then reports it as already published, which counts as done.
+          set +e
+          out=$(npx --yes ovsx@0 publish "$VSIX" 2>&1)
+          status=$?
+          set -e
+          echo "$out"
+          if [ $status -ne 0 ] && echo "$out" | grep -q "is already published"; then
+            echo "$PUBLISHER.$NAME $VERSION is already on Open VSX (possibly still being scanned): skipping"
+            exit 0
+          fi
+          exit $status
