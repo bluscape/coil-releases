@@ -3,9 +3,11 @@
 #
 # Secrets (Settings -> Secrets and variables -> Actions):
 #   VSCE_PAT  Azure DevOps token: All accessible organizations, scope Marketplace -> Manage.
-#   OVSX_PAT  (optional) open-vsx.org access token; the bluscape namespace must exist.
+#   OVSX_PAT  (optional) open-vsx.org access token. The first run creates the namespace
+#             (the package's publisher, bluscape) if it doesn't exist yet.
 #
-# Run it by hand for an existing release: Actions -> Publish extension -> Run workflow, tag v0.2.4.
+# Run it by hand for an existing release: Actions -> Publish extension -> Run workflow, tag v0.2.4,
+# and pick where to publish (a version already on one store would fail there).
 name: Publish extension
 
 on:
@@ -16,6 +18,11 @@ on:
       tag:
         description: Release tag to publish, such as v0.2.4
         required: true
+      target:
+        description: Where to publish
+        type: choice
+        options: [both, marketplace, openvsx]
+        default: both
 
 permissions:
   contents: read
@@ -51,10 +58,21 @@ jobs:
           node-version: 22
 
       - name: Publish to the VS Code Marketplace
+        if: ${{ inputs.target != 'openvsx' }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: npx --yes @vscode/vsce@3 publish --packagePath "$VSIX"
 
+      - name: Create the Open VSX namespace if it's missing
+        if: ${{ env.OVSX_PAT != '' && inputs.target != 'marketplace' }}
+        run: |
+          namespace=$(grep -o 'Publisher="[^"]*"' manifest.xml | head -n1 | cut -d'"' -f2)
+          if curl -sf "https://open-vsx.org/api/$namespace" > /dev/null; then
+            echo "Namespace $namespace exists"
+          else
+            npx --yes ovsx@0 create-namespace "$namespace"
+          fi
+
       - name: Publish to Open VSX
-        if: ${{ env.OVSX_PAT != '' }}
+        if: ${{ env.OVSX_PAT != '' && inputs.target != 'marketplace' }}
         run: npx --yes ovsx@0 publish "$VSIX"
